@@ -114,7 +114,8 @@ class Salesforce(object):
                 sandbox=self.sandbox,
                 sf_version=self.sf_version,
                 proxies=self.proxies,
-                client_id=client_id)
+                client_id=client_id,
+                domain=instance)
 
         elif all(arg is not None for arg in (
                 session_id, instance or instance_url)):
