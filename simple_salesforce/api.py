@@ -99,6 +99,9 @@ class Salesforce(object):
                     'ignoring proxies: %s', proxies
                 )
 
+        if instance_url is not None:
+            instance = urlparse(instance_url).hostname
+        
         # Determine if the user wants to use our username/password auth or pass
         # in their own information
         if all(arg is not None for arg in (
@@ -124,10 +127,7 @@ class Salesforce(object):
 
             # If the user provides the full url (as returned by the OAuth
             # interface for example) extract the hostname (which we rely on)
-            if instance_url is not None:
-                self.sf_instance = urlparse(instance_url).hostname
-            else:
-                self.sf_instance = instance
+            self.sf_instance = instance
 
         elif all(arg is not None for arg in (
                 username, password, organizationId)):
@@ -142,7 +142,8 @@ class Salesforce(object):
                 sandbox=self.sandbox,
                 sf_version=self.sf_version,
                 proxies=self.proxies,
-                client_id=client_id)
+                client_id=client_id,
+                domain=instance)
 
         else:
             raise TypeError(
